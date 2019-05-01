@@ -10,6 +10,12 @@
             "email": "support@smsglobal.com"
         }
     ],
+    "repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/smsglobal/magento-m2-sms-integration"
+    }
+   ],
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
