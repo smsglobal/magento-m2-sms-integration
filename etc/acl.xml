@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="Smsglobal_Sms::Smslog" sortOrder="10" title="Smslog">
+					<resource id="Smsglobal_Sms::Smslog_save" sortOrder="10" title="Save Smslog"/>
+					<resource id="Smsglobal_Sms::Smslog_delete" sortOrder="20" title="Delete Smslog"/>
+					<resource id="Smsglobal_Sms::Smslog_update" sortOrder="30" title="Update Smslog"/>
+					<resource id="Smsglobal_Sms::Smslog_view" sortOrder="40" title="View Smslog"/>
+				</resource>
+				<resource id="Magento_Backend::stores">
+					<resource id="Magento_Backend::stores_settings">
+						<resource id="Magento_Config::config">
+							<resource id="Smsglobal_Sms::config_smsglobal_sms" title="generalsettings"/>
+						</resource>
+					</resource>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>

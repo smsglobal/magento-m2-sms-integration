@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Smsglobal\Sms\Api\SmslogRepositoryInterface" type="Smsglobal\Sms\Model\SmslogRepository"/>
+	<preference for="Smsglobal\Sms\Api\Data\SmslogInterface" type="Smsglobal\Sms\Model\Data\Smslog"/>
+	<preference for="Smsglobal\Sms\Api\Data\SmslogSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Smsglobal\Sms\Model\ResourceModel\Smslog\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">smsglobal_smslog</argument>
+			<argument name="resourceModel" xsi:type="string">Smsglobal\Sms\Model\ResourceModel\Smslog\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="smsglobal_sms_smslog_listing_data_source" xsi:type="string">Smsglobal\Sms\Model\ResourceModel\Smslog\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+	<type name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="UpdateSmsStatus" xsi:type="object">Smsglobal\Sms\Console\Command\UpdateSmsStatus</item>
+			</argument>
+		</arguments>
+	</type>
+	<type name="Smsglobal\Sms\Logger\Handler">
+		<arguments>
+			<argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+			<argument name="fileName" xsi:type="string">/var/log/sms.log</argument>
+		</arguments>
+	</type>
+	<type name="Smsglobal\Sms\Logger\Logger">
+		<arguments>
+			<argument name="name" xsi:type="string">SMSGlobal</argument>
+			<argument name="handlers"  xsi:type="array">
+				<item name="report" xsi:type="object">Smsglobal\Sms\Logger\Handler</item>
+				<item name="system" xsi:type="object">Smsglobal\Sms\Logger\Handler</item>
+				<item name="debug" xsi:type="object">Smsglobal\Sms\Logger\Handler</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

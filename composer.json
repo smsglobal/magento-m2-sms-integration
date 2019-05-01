@@ -1,0 +1,23 @@
+{
+    "name": "smsglobal/module-sms",
+    "description": "SMSGlobal SMS Integration with Magento developed by SMSGlobal Team",
+    "version": "1.0.0",
+    "type": "magento2-module",
+    "license": "Proprietery License",
+    "authors": [
+        {
+            "name": "SMSGlobal Tech Team",
+            "email": "support@smsglobal.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Smsglobal\\Sms\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

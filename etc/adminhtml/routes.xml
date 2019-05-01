@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+	<router id="admin">
+		<route frontName="smslog" id="smslog">
+			<module before="Magento_Backend" name="Smsglobal_Sms"/>
+		</route>
+		<route frontName="sms" id="sms">
+			<module before="Magento_Backend" name="Smsglobal_Sms"/>
+		</route>
+		<route frontName="smsglobal_sms" id="smsglobal_sms">
+			<module before="Magento_Backend" name="Smsglobal_Sms"/>
+		</route>
+	</router>
+</config>

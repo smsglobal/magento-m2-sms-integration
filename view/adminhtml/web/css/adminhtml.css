@@ -1,0 +1,4 @@
+.admin__menu .level-0.item-top-level > a:before {
+    content: url('../images/smsglobal.svg');
+    margin-bottom: .7rem !important;
+}

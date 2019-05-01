@@ -1,0 +1,32 @@
+<form id="send-mail-form-<%- customerid %>" method="post" enctype="multipart/form-data" action="<%- formaction %>">
+    <div class="modal-body">
+        <div class="bootbox-body">
+            <div>
+                <label for="senderid">Sender ID:</label>
+                <input class="bootbox-input bootbox-input-text form-control required-entry" type="text" name="senderid"><br/><br/>
+            </div>
+            <div>
+                <label for="msg">Message:</label>
+                <textarea class="bootbox-input bootbox-input-text form-control required-entry" name="message" rows="10"
+                          cols="100"></textarea>
+                You can use: {CustomerFirstName} for customer first name, {CustomerMiddleName} for customer middle name
+                {CustomerLastName} for customer last name, {CustomerEmail} for customer email<br/><br/>
+            </div>
+            <div>
+                <label for="adminnotify">Send Notification to Admin:</label>
+                <select class="bootbox-input bootbox-input-text form-control required-entry" name="adminnotify">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <span class="error"></span>
+        <input type="hidden" name="entity_id" value="<%- customerid %>">
+        <input type="hidden" name="form_key" value="<%- formkey %>">
+        <button type="reset" class="btn btn-default"><span><%- cancellabel %></span></button>
+        <button type="submit" class="btn btn-primary"><span><%- submitlabel %></span></button>
+        <span class="clear"></span>
+    </div>
+</form>

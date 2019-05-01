@@ -1,0 +1,71 @@
+<?php
+
+$customers = $block->getCustomerParams();
+
+?>
+<table class="data-grid" border="1">
+    <tr>
+        <td>
+            <form id="send-bulk-sms" method="post" enctype="multipart/form-data" action="<?php echo $block->getFormUrl(); ?>">
+                <div class="modal-body">
+                    <div class="bootbox-body">
+                        <div>
+                            <label for="senderid">Sender ID:</label>
+                            <input class="bootbox-input bootbox-input-text form-control required-entry" type="text"
+                                   name="senderid"><br/><br/>
+                        </div>
+                        <div>
+                            <label for="msg" style="vertical-align: top">Message:</label>
+                            <textarea class="bootbox-input bootbox-input-text form-control required-entry"
+                                      name="message" rows="10"
+                                      cols="100"></textarea><br/><br/>
+                            You can use: {CustomerFirstName} for customer first name, {CustomerMiddleName} for customer
+                            middle name
+                            {CustomerLastName} for customer last name, {CustomerEmail} for customer email<br/><br/>
+                        </div>
+                        <div>
+                            <label for="adminnotify">Send Notification to Admin:</label>
+                            <select class="bootbox-input bootbox-input-text form-control required-entry"
+                                    name="adminnotify">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select><br/><br/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" align="right">
+                    <span class="error"></span>
+                    <input type="hidden" name="entity_id" value="<?php  echo implode(",", array_keys($customers))?> ">
+                    <input type="hidden" name="form_key" value="<?php echo $block->getFormKey()?>">
+                    <button type="submit" class="btn btn-primary"><span>Send SMS</span></button>
+                    <button type="reset" class="btn btn-default"><span>Cancel</span></button>
+                    <span class="clear"></span>
+                </div>
+            </form>
+        </td>
+        <td valign="top">
+            <table cellspacing="5" cellpadding="5" class="data-grid">
+
+                <tr>
+                    <th colspan="3">Selected Customers</th>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Number</th>
+                </tr>
+                <tr>
+                    <?php foreach ($customers
+
+                    as $key => $value) { ?>
+                <tr>
+                    <td><?php print $key; ?></td>
+                    <td><?php print $value['name']; ?></td>
+                    <td><?php print $value['phone']; ?></td>
+                </tr>
+                <?php } ?>
+            </table>
+
+        </td>
+    </tr>
+</table>

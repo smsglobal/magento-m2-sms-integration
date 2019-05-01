@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="sales_order_shipment_save_after">
+		<observer instance="Smsglobal\Sms\Observer\Sales\OrderShipmentSaveAfter" name="smsglobal_sms_observer_sales_ordershipmentsaveafter_sales_order_shipment_save_after"/>
+	</event>
+	<event name="sales_order_creditmemo_refund">
+		<observer instance="Smsglobal\Sms\Observer\Sales\OrderCreditmemoSaveAfter" name="smsglobal_sms_observer_sales_ordercreditmemosaveafter_sales_order_creditmemo_save_after"/>
+	</event>
+	<event name="customer_register_success">
+		<observer instance="Smsglobal\Sms\Observer\Customer\RegisterSuccess" name="smsglobal_sms_observer_customer_registersuccess_customer_register_success"/>
+	</event>
+	<event name="sales_order_save_after">
+		<observer instance="Smsglobal\Sms\Observer\Sales\OrderSaveAfter" name="smsglobal_sms_observer_sales_ordersaveafter_sales_order_save_after"/>
+	</event>
+	<event name="sales_order_invoice_pay">
+		<observer instance="Smsglobal\Sms\Observer\Sales\OrderInvoicePay" name="smsglobal_sms_observer_sales_orderinvoicepay_sales_order_invoice_pay"/>
+	</event>
+	<event name="order_cancel_after">
+		<observer instance="Smsglobal\Sms\Observer\Sales\OrderCancelAfter" name="smsglobal_sms_observer_sales_ordersaveafter_sales_order_cancel_after"/>
+	</event>
+</config>

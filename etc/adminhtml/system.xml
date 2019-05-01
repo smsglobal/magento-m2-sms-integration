@@ -1,0 +1,330 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="smsglobal" sortOrder="999" translate="label">
+            <label>smsglobal</label>
+        </tab>
+        <section id="generalsettings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1"
+                 translate="label">
+            <label>General Settings</label>
+            <tab>smsglobal</tab>
+            <resource>Smsglobal_Sms::config_smsglobal_sms</resource>
+            <group id="smsglobalsettings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="1"
+                   translate="label">
+                <label>SMSGlobal Settings</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment>SMS Notifications enabled or not</comment>
+                    <validate>required-entry</validate>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="apiurl" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="2" translate="label"
+                       type="text">
+                    <label>API URL</label>
+                    <comment>API URL - https://api.smsglobal.com/v2/sms/</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="apikey" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="3" translate="label"
+                       type="text">
+                    <label>API key</label>
+                    <comment>Get API Key from SMSGlobal MXT</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="secretkey" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="4"
+                       translate="label" type="text">
+                    <label>Secret Key</label>
+                    <comment>Get Secret Key from SMSGlobal MXT</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="5"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment>Global Sender ID</comment>
+                </field>
+                <field id="storemobile" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="6"
+                       translate="label" type="text">
+                    <label>Store Mobile</label>
+                    <comment>Store mobile number, where the notifications are sent. Enter comma separated numbers for
+                        multiple recipients
+                    </comment>
+                </field>
+            </group>
+            <group id="testsmssettings" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="7"
+                   translate="label">
+                <label>Test SMS</label>
+                <field id="testsmstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="8"
+                       translate="label" type="textarea">
+                    <label>Test SMS Text</label>
+                    <comment/>
+                </field>
+                <field id="testmobilenumber" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="9"
+                       translate="label" type="text">
+                    <label>Test Mobile Number</label>
+                    <comment/>
+                </field>
+                <field id="testsendsms" translate="Send SMS" type="button" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label></label>
+                    <frontend_model>Smsglobal\Sms\Block\System\Config\Button</frontend_model>
+                </field>
+            </group>
+            <group id="profile" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>Profile</label>
+                <field id="balance" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="11" translate="label"
+                       type="text">
+                    <label>Balance</label>
+                    <frontend_model>Smsglobal\Sms\Block\System\Config\Balance</frontend_model>
+                    <comment/>
+                </field>
+                <field id="support" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="12" translate="label"
+                       type="text">
+                    <frontend_model>Smsglobal\Sms\Block\System\Config\Misc</frontend_model>
+                    <comment/>
+                </field>
+            </group>
+        </section>
+        <section id="smstriggers" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="13" translate="label">
+            <label>SMS Triggers</label>
+            <tab>smsglobal</tab>
+            <resource>Smsglobal_Sms::config_smsglobal_sms</resource>
+            <group id="newcustomer" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="14"
+                   translate="label">
+                <label>New Customer Welcome</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="15" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="16"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment/>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="17" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment>You can use: {CustomerFirstName} for customer first name, {CustomerMiddleName} for customer
+                        middle name
+                        {CustomerLastName} for customer last name, {CustomerEmail} for customer email
+                    </comment>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="18"
+                       translate="label" type="select">
+                    <label>Send Notification to Admin</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="neworder" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="19" translate="label">
+                <label>New Order</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="21"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment/>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="22" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}
+                    </comment>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="23"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="newshipment" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="24"
+                   translate="label">
+                <label>New Shipment</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="25" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="26"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment/>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="27" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}, {Carrier}, {TrackingNumber}
+                    </comment>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="28"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="orderhold" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="29" translate="label">
+                <label>Order Hold</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="31"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}
+                    </comment>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="32" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment/>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="33"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="orderunhold" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="34"
+                   translate="label">
+                <label>Order Unhold</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="35" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="36"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}
+                    </comment>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="37" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment/>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="38"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="ordercancel" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="39"
+                   translate="label">
+                <label>Order Cancel</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="41"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment/>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="42" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}
+                    </comment>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="43"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="refundorder" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="44"
+                   translate="label">
+                <label>Refund Order</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="45" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="46"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment/>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="47" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}
+                    </comment>
+                </field>
+                <field id="adminnotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="48"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="orderpaid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="49" translate="label">
+                <label>Order Paid</label>
+                <field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label"
+                       type="select">
+                    <label>Enabled</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="senderid" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="51"
+                       translate="label" type="text">
+                    <label>Sender ID</label>
+                    <comment/>
+                </field>
+                <field id="smstext" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="52" translate="label"
+                       type="textarea">
+                    <label>SMS Text</label>
+                    <comment>You can use: {CustomerFirstName},
+                        {CustomerLastName},{CustomerTelephone}, {CustomerEmail},
+                        {OrderNumber}, {OrderCurrency}, {OrderTotal}, {OrderDate}
+                        {OrderTime}, {OrderStatus}
+                    </comment>
+                </field>
+                <field id="adminotify" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="53"
+                       translate="label" type="select">
+                    <label>Send Admin Notification</label>
+                    <comment/>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

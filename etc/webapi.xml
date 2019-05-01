@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route method="POST" url="/V1/smsglobal-sms/smslog">
+		<service class="Smsglobal\Sms\Api\SmslogRepositoryInterface" method="save"/>
+		<resources>
+			<resource ref="Smsglobal_Sms::Smslog_save"/>
+		</resources>
+	</route>
+	<route method="GET" url="/V1/smsglobal-sms/smslog/search">
+		<service class="Smsglobal\Sms\Api\SmslogRepositoryInterface" method="getList"/>
+		<resources>
+			<resource ref="Smsglobal_Sms::Smslog_view"/>
+		</resources>
+	</route>
+	<route method="GET" url="/V1/smsglobal-sms/smslog/:logId">
+		<service class="Smsglobal\Sms\Api\SmslogRepositoryInterface" method="getById"/>
+		<resources>
+			<resource ref="Smsglobal_Sms::Smslog_view"/>
+		</resources>
+	</route>
+	<route method="PUT" url="/V1/smsglobal-sms/smslog/:logId">
+		<service class="Smsglobal\Sms\Api\SmslogRepositoryInterface" method="save"/>
+		<resources>
+			<resource ref="Smsglobal_Sms::Smslog_update"/>
+		</resources>
+	</route>
+	<route method="DELETE" url="/V1/smsglobal-sms/smslog/:logId">
+		<service class="Smsglobal\Sms\Api\SmslogRepositoryInterface" method="deleteById"/>
+		<resources>
+			<resource ref="Smsglobal_Sms::Smslog_delete"/>
+		</resources>
+	</route>
+</routes>

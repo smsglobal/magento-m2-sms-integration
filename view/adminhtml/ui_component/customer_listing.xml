@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="customer_columns">
+        <actionsColumn name="send_sms" class="Smsglobal\Sms\Ui\Component\Listing\Column\Sendsms">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Smsglobal_Sms/js/grid/columns/sendsms</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Send SMS</item>
+                    <item name="sortOrder" xsi:type="number">13</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+        <listingToolbar name="listing_top">
+            <massaction name="listing_massaction">
+                <action name="sendbulksms">
+                    <settings>
+                        <confirm>
+                            <message translate="true">Are you sure to send SMS to selected customers?</message>
+                            <title translate="true">Send SMS</title>
+                        </confirm>
+                        <url path="smsglobal_sms/smslog/bulkSend"/> <!-- your custom controller to handle request -->
+                        <type>sendbulksms</type>
+                        <label translate="true">Send SMS</label>
+                    </settings>
+                </action>
+            </massaction>
+        </listingToolbar>
+    </listing>
