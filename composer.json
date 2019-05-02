@@ -16,7 +16,6 @@
         "url": "https://github.com/smsglobal/magento-m2-sms-integration.git"
     }
    ],
-    "minimum-stability": "dev-master",
     "require": {},
     "autoload": {
         "psr-4": {
