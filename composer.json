@@ -12,8 +12,8 @@
     ],
     "repositories": [
     {
-        "type": "git",
-        "url": "https://github.com/smsglobal/magento-m2-sms-integration"
+        "type": "vcs",
+        "url": "https://github.com/smsglobal/magento-m2-sms-integration.git"
     }
    ],
     "minimum-stability": "dev-master",
