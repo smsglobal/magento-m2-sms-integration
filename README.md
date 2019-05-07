@@ -13,7 +13,9 @@ The SMSGlobal SMS Integration is an integration with the Magento e-commerce plat
 * Enterprise Scalability
 * API Flexibility
 * No setup fees - No contracts - No catches
-* Integration Compatibility
+
+## Integration Compatibility
+
 * Magento Community Edition: 2.2.0 and 2.3.0
 
 
