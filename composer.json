@@ -1,5 +1,5 @@
 {
-    "name": "smsglobal/module-sms",
+    "name": "sms-global/module-sms",
     "description": "SMSGlobal SMS Integration with Magento developed by SMSGlobal Team",
     "version": "1.0.0",
     "type": "magento2-module",
