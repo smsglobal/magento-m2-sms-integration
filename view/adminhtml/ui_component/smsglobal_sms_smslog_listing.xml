@@ -5,6 +5,19 @@
 			<item name="provider" xsi:type="string">smsglobal_sms_smslog_listing.smsglobal_sms_smslog_listing_data_source</item>
 		</item>
 	</argument>
+	<settings>
+		<spinner>smsglobal_sms_smslog_columns</spinner>
+		<deps>
+			<dep>smsglobal_sms_smslog_listing.smsglobal_sms_smslog_listing_data_source</dep>
+		</deps>
+		<buttons>
+			<button name="add">
+				<url path="*/*/new"/>
+				<class>primary</class>
+				<label translate="true">Send SMS</label>
+			</button>
+		</buttons>
+	</settings>
 	<massaction name="listing_massaction">
 		<action name="delete">
 			<argument name="data" xsi:type="array">
@@ -20,19 +33,6 @@
 			</argument>
 		</action>
 	</massaction>
-	<settings>
-		<spinner>smsglobal_sms_smslog_columns</spinner>
-		<deps>
-			<dep>smsglobal_sms_smslog_listing.smsglobal_sms_smslog_listing_data_source</dep>
-		</deps>
-		<buttons>
-			<button name="add">
-				<url path="*/*/new"/>
-				<class>primary</class>
-				<label translate="true">Send SMS</label>
-			</button>
-		</buttons>
-	</settings>
 	<dataSource component="Magento_Ui/js/grid/provider" name="smsglobal_sms_smslog_listing_data_source">
 		<settings>
 			<updateUrl path="mui/index/render"/>
