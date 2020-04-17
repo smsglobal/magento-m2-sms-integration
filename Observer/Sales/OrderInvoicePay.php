@@ -40,28 +40,30 @@ class OrderInvoicePay implements \Magento\Framework\Event\ObserverInterface
     {
         if ($this->_smsHelper->getOrderPaidSmsEnabled()) {
 
-            $invoice = $observer->getEvent()->getInvoice()->getData();
-            $this->_logger->info('Invoice data', $invoice);
-
-            $orderId = $invoice['order_id'];
+            /** @var \Magento\Sales\Model\Order\Invoice $invoice */
+            $invoice = $observer->getEvent()->getInvoice();
+            $this->_logger->info('Invoice data', $invoice->getData());
+            $order = $invoice->getOrder();
+            $this->_logger->info('Order data', $order->getData());
+            $orderId = $invoice->getOrder()->getIncrementId();
             $this->_logger->info('Order Paid SMS Initiated', [$orderId]);
 
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
-            $destination = $order->getShippingAddress()->getTelephone();
-            $this->_logger->info('Customer Mobile:', [$destination]);
+            if ($order->getShippingAddress()) {
+                $destination = $order->getShippingAddress()->getTelephone();
 
-            if ($destination) {
-                $origin = $this->_smsHelper->getOrderPaidSmsSenderId();
-                $message = $this->_smsHelper->getOrderPaidSmsText();
-                $adminNotify = $this->_smsHelper->getOrderPaidSmsAdminNotifyEnabled();
-                $trigger = "Order Paid";
-                $data = $this->_smsHelper->getOrderData($order);
-                $data['CustomerTelephone'] = $destination;
-                $extraData = $this->_smsHelper->getInvoiceData($order);
-                $data = array_merge($data, $extraData);
-                $message = $this->_smsHelper->messageProcessor($message, $data);
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                if (!empty($destination)) {
+                    $this->_logger->info('Customer Mobile:', [$destination]);
+                    $origin = $this->_smsHelper->getOrderPaidSmsSenderId();
+                    $message = $this->_smsHelper->getOrderPaidSmsText();
+                    $adminNotify = $this->_smsHelper->getOrderPaidSmsAdminNotifyEnabled();
+                    $trigger = "Order Paid";
+                    $data = $this->_smsHelper->getOrderData($order);
+                    $data['CustomerTelephone'] = $destination;
+                    $extraData = $this->_smsHelper->getInvoiceData($order);
+                    $data = array_merge($data, $extraData);
+                    $message = $this->_smsHelper->messageProcessor($message, $data);
+                    $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                }
             }
 
         }

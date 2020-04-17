@@ -73,7 +73,7 @@ class OrderSaveAfter implements \Magento\Framework\Event\ObserverInterface
                 $adminNotify = $this->_smsHelper->getOrderHoldSmsAdminNotifyEnabled();
                 $flag = true;
             }
-            if (strpos($_SERVER['REQUEST_URI'], 'order/unhold') !== false && $this->_smsHelper->getOrderUnholdSmsEnabled()) {
+            if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'order/unhold') !== false && $this->_smsHelper->getOrderUnholdSmsEnabled()) {
                 $this->_logger->info('unhold order SMS Initiated', [$order]);
                 $trigger = "Unhold Order";
                 $origin = $this->_smsHelper->getOrderUnholdSmsSenderId();
