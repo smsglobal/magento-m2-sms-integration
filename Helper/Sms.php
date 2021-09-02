@@ -20,7 +20,10 @@ class Sms extends AbstractHelper
 
     protected $_objectInterface;
     protected $_objectManager;
-    protected $_logger;
+    /**
+     * @var Logger
+     */
+    protected $logger;
 
     /**
      * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
@@ -33,7 +36,7 @@ class Sms extends AbstractHelper
     {
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $this->_objectInterface = $this->_objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
-        $this->_logger = $logger;
+        $this->logger = $logger;
         $this->_timezoneInterface = $timezoneInterface;
         parent::__construct($context);
     }
@@ -540,7 +543,7 @@ class Sms extends AbstractHelper
         $output = curl_exec($curlRequest);
 
         if (curl_error($curlRequest)) {
-            $this->_logger->addInfo("SMS:", [$output]);
+            $this->logger->addInfo("SMS:", [$output]);
             return;
         }
 
@@ -551,7 +554,7 @@ class Sms extends AbstractHelper
             $results = json_decode($output);
 
 
-            $this->_logger->addInfo("SMS:", [$results]); // log string Data to customfile.log
+            $this->logger->addInfo("SMS:", [$results]); // log string Data to customfile.log
 
             if (property_exists($results, 'messages')) {
 
@@ -570,7 +573,7 @@ class Sms extends AbstractHelper
                     try {
                         $model->setData($data)->save();
                     } catch (\Exception $e) {
-                        $this->_logger->addInfo("Error", [$e->getMessage()]);
+                        $this->logger->addInfo("Error", [$e->getMessage()]);
                     }
                 }
             }
@@ -607,7 +610,7 @@ class Sms extends AbstractHelper
 
         $output = curl_exec($curlRequest);
 
-        $this->_logger->addInfo("Balance:", [$output]);
+        $this->logger->addInfo("Balance:", [$output]);
 
 
         $result = json_decode($output);
@@ -656,7 +659,7 @@ class Sms extends AbstractHelper
         }
 
         $output = curl_exec($curlRequest);
-        $this->_logger->addInfo("Status:", [$output]);
+        $this->logger->addInfo("Status:", [$output]);
 
         $result = json_decode($output);
 

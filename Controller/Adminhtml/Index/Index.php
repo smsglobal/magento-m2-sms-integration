@@ -48,10 +48,10 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         try {
-            $destination = $this->smsHelper->getTestMobileNumber();
-            $origin = $this->smsHelper->getSenderId();
-            $message = $this->smsHelper->getTestSmsText();
 
+            $destination = $this->smsHelper->getTestMobileNumber() ?? $this->getRequest()->getPost('destination');
+            $message = $this->smsHelper->getTestSmsText() ?? $this->getRequest()->getPost('message');
+            $origin = $this->smsHelper->getSenderId() ?? $this->getRequest()->getPost('origin') ?? null;
 
             $output = $this->smsHelper->sendSms($origin, $destination, $message);
 

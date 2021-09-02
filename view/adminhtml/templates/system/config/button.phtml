@@ -5,6 +5,8 @@
     ], function(jQuery){
         function sendTestSMS() {
             params = {
+                "message": jQuery("#generalsettings_testsmssettings_testsmstext").val(),
+                "destination": jQuery("#generalsettings_testsmssettings_testmobilenumber").val(),
             };
 
             new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
