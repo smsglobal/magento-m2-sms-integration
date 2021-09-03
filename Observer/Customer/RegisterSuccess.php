@@ -39,8 +39,24 @@ class RegisterSuccess implements \Magento\Framework\Event\ObserverInterface
         if ($this->_smsHelper->getNewCustomerSmsEnabled()) {
             $customer = $observer->getEvent()->getCustomer();
             $this->_logger->info('Customer:', [$customer->getFirstName()]);
-            if (method_exists($customer, 'getBillingAddress')) {
-                $destination = $customer->getBillingAddress()->getTelephone();
+
+            if ($customer instanceof \Magento\Customer\Api\Data\CustomerInterface) {
+                $addresses = $customer->getAddresses();
+
+                foreach ($addresses as $address) {
+                    if ($address->isDefaultBilling()) {
+                        $billingAddress = $address;
+                    }
+                }
+            }
+
+            if (isset($billingAddress) && $billingAddress instanceof \Magento\Customer\Model\Data\Address) {
+                $destination = $billingAddress->getTelephone();
+
+                if (empty($destination)) {
+                    $this->_logger->info('Customer does not have phone number associated to his billing address #' . $billingAddress->getId());
+                }
+
                 $data = $this->_smsHelper->getCustomerData($customer);
                 $this->_logger->info('New Customer SMS Initiated', [$customer->getFirstName()]);
                 $trigger = "New Customer";
@@ -49,6 +65,8 @@ class RegisterSuccess implements \Magento\Framework\Event\ObserverInterface
                 $message = $this->_smsHelper->messageProcessor($message, $data);
                 $adminNotify = $this->_smsHelper->getNewCustomerSmsAdminNotifyEnabled();
                 $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+            } else {
+                $this->_logger->info("Billing address not found");
             }
         }
     }
