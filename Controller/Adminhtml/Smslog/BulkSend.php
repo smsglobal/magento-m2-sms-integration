@@ -20,10 +20,6 @@ class BulkSend extends AbstractMassAction
 
     protected $customerRepository;
 
-    protected $_smsHelper;
-    protected $_logger;
-
-
     protected function massAction(AbstractCollection $collection)
     {
         $data = [];

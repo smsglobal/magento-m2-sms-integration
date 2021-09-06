@@ -8,14 +8,14 @@ class CollectionFactory
      *
      * @var \Magento\Framework\ObjectManagerInterface
      */
-    protected $_objectManager = null;
+    protected $objectManager = null;
 
     /**
      * Instance name to create
      *
      * @var string
      */
-    protected $_instanceName = null;
+    protected $instanceName = null;
 
     /**
      * Factory constructor
@@ -25,8 +25,8 @@ class CollectionFactory
      */
     public function __construct(\Magento\Framework\ObjectManagerInterface $objectManager, $instanceName = '\\Smsglobal\\Sms\Model\\ResourceModel\\Smslog\\Collection')
     {
-        $this->_objectManager = $objectManager;
-        $this->_instanceName = $instanceName;
+        $this->objectManager = $objectManager;
+        $this->instanceName = $instanceName;
     }
 
     /**
@@ -35,6 +35,6 @@ class CollectionFactory
      */
     public function create(array $data = array())
     {
-        return $this->_objectManager->create($this->_instanceName, $data);
+        return $this->objectManager->create($this->instanceName, $data);
     }
 }
