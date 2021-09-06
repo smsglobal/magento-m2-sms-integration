@@ -15,15 +15,15 @@ use Smsglobal\Sms\Logger\Logger as Logger;
 
 class RegisterSuccess implements \Magento\Framework\Event\ObserverInterface
 {
-    protected $_smsHelper;
-    protected $_logger;
+    protected $smsHelper;
+    protected $logger;
 
 
     public function __construct(\Smsglobal\Sms\Helper\Sms $smsHelper, Logger $logger
     )
     {
-        $this->_smsHelper = $smsHelper;
-        $this->_logger = $logger;
+        $this->smsHelper = $smsHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -36,9 +36,9 @@ class RegisterSuccess implements \Magento\Framework\Event\ObserverInterface
         \Magento\Framework\Event\Observer $observer
     )
     {
-        if ($this->_smsHelper->getNewCustomerSmsEnabled()) {
+        if ($this->smsHelper->getNewCustomerSmsEnabled()) {
             $customer = $observer->getEvent()->getCustomer();
-            $this->_logger->info('Customer:', [$customer->getFirstName()]);
+            $this->logger->info('Customer:', [$customer->getFirstName()]);
 
             if ($customer instanceof \Magento\Customer\Api\Data\CustomerInterface) {
                 $addresses = $customer->getAddresses();
@@ -54,19 +54,19 @@ class RegisterSuccess implements \Magento\Framework\Event\ObserverInterface
                 $destination = $billingAddress->getTelephone();
 
                 if (empty($destination)) {
-                    $this->_logger->info('Customer does not have phone number associated to his billing address #' . $billingAddress->getId());
+                    $this->logger->info('Customer does not have phone number associated to his billing address #' . $billingAddress->getId());
                 }
 
-                $data = $this->_smsHelper->getCustomerData($customer);
-                $this->_logger->info('New Customer SMS Initiated', [$customer->getFirstName()]);
+                $data = $this->smsHelper->getCustomerData($customer);
+                $this->logger->info('New Customer SMS Initiated', [$customer->getFirstName()]);
                 $trigger = "New Customer";
-                $origin = $this->_smsHelper->getNewCustomerSmsSenderId();
-                $message = $this->_smsHelper->getNewCustomerSmsText();
-                $message = $this->_smsHelper->messageProcessor($message, $data);
-                $adminNotify = $this->_smsHelper->getNewCustomerSmsAdminNotifyEnabled();
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                $origin = $this->smsHelper->getNewCustomerSmsSenderId();
+                $message = $this->smsHelper->getNewCustomerSmsText();
+                $message = $this->smsHelper->messageProcessor($message, $data);
+                $adminNotify = $this->smsHelper->getNewCustomerSmsAdminNotifyEnabled();
+                $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
             } else {
-                $this->_logger->info("Billing address not found");
+                $this->logger->info("Billing address not found");
             }
         }
     }

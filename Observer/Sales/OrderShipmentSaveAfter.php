@@ -17,15 +17,15 @@ class OrderShipmentSaveAfter implements \Magento\Framework\Event\ObserverInterfa
 {
 
 
-    protected $_smsHelper;
-    protected $_logger;
+    protected $smsHelper;
+    protected $logger;
 
 
     public function __construct(\Smsglobal\Sms\Helper\Sms $smsHelper, Logger $logger
     )
     {
-        $this->_smsHelper = $smsHelper;
-        $this->_logger = $logger;
+        $this->smsHelper = $smsHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -38,35 +38,35 @@ class OrderShipmentSaveAfter implements \Magento\Framework\Event\ObserverInterfa
         \Magento\Framework\Event\Observer $observer
     )
     {
-        if ($this->_smsHelper->getNewShipmentSmsEnabled()) {
+        if ($this->smsHelper->getNewShipmentSmsEnabled()) {
 
             $shipment = $observer->getEvent()->getShipment()->getData();
-            $this->_logger->info('Shipment', [$shipment]);
+            $this->logger->info('Shipment', [$shipment]);
             $orderId = $shipment['order_id'];
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
             $destination = $order->getShippingAddress()->getTelephone();
-            $this->_logger->info('Customer Mobile:', [$destination]);
+            $this->logger->info('Customer Mobile:', [$destination]);
 
             if ($destination) {
                 if ($shipment['created_at'] == $shipment['updated_at']) {
-                    $this->_logger->info('New Shipment SMS Initiated', [$orderId]);
+                    $this->logger->info('New Shipment SMS Initiated', [$orderId]);
                     $trigger = "New Shipment";
-                    $origin = $this->_smsHelper->getNewShipmentSmsSenderId();
-                    $message = $this->_smsHelper->getNewShipmentSmsText();
-                    $adminNotify = $this->_smsHelper->getNewShipmentSmsAdminNotifyEnabled();
+                    $origin = $this->smsHelper->getNewShipmentSmsSenderId();
+                    $message = $this->smsHelper->getNewShipmentSmsText();
+                    $adminNotify = $this->smsHelper->getNewShipmentSmsAdminNotifyEnabled();
                 } else {
-                    $this->_logger->info('Update Shipment SMS Initiated', [$orderId]);
+                    $this->logger->info('Update Shipment SMS Initiated', [$orderId]);
                     $trigger = "Shipment Updates";
-                    $origin = $this->_smsHelper->getShipmentUpdatesSmsSenderId();
-                    $message = $this->_smsHelper->getShipmentUpdatesSmsText();
-                    $adminNotify = $this->_smsHelper->getShipmentUpdatesSmsAdminNotifyEnabled();
+                    $origin = $this->smsHelper->getShipmentUpdatesSmsSenderId();
+                    $message = $this->smsHelper->getShipmentUpdatesSmsText();
+                    $adminNotify = $this->smsHelper->getShipmentUpdatesSmsAdminNotifyEnabled();
                 }
-                $data = $this->_smsHelper->getOrderData($order);
-                $data = array_merge($data, $this->_smsHelper->getShipmentData($order,$observer->getEvent()->getShipment()));
+                $data = $this->smsHelper->getOrderData($order);
+                $data = array_merge($data, $this->smsHelper->getShipmentData($order,$observer->getEvent()->getShipment()));
                 $data['CustomerTelephone'] = $destination;
-                $message = $this->_smsHelper->messageProcessor($message, $data);
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                $message = $this->smsHelper->messageProcessor($message, $data);
+                $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
             }
         }
     }

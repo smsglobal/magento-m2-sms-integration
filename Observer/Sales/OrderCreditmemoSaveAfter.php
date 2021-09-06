@@ -17,15 +17,15 @@ class OrderCreditmemoSaveAfter implements \Magento\Framework\Event\ObserverInter
 {
 
 
-    protected $_smsHelper;
-    protected $_logger;
+    protected $smsHelper;
+    protected $logger;
 
 
     public function __construct(\Smsglobal\Sms\Helper\Sms $smsHelper, Logger $logger
     )
     {
-        $this->_smsHelper = $smsHelper;
-        $this->_logger = $logger;
+        $this->smsHelper = $smsHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -38,26 +38,26 @@ class OrderCreditmemoSaveAfter implements \Magento\Framework\Event\ObserverInter
         \Magento\Framework\Event\Observer $observer
     )
     {
-        if ($this->_smsHelper->getRefundOrderSmsEnabled()) {
+        if ($this->smsHelper->getRefundOrderSmsEnabled()) {
 
             $creditmemo = $observer->getEvent()->getCreditmemo()->getData();
-            $this->_logger->info('Credit memo', [$creditmemo]);
+            $this->logger->info('Credit memo', [$creditmemo]);
             $orderId = $creditmemo['order_id'];
-            $this->_logger->info('Order Refund SMS Initiated', [$orderId]);
+            $this->logger->info('Order Refund SMS Initiated', [$orderId]);
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
             $destination = $order->getShippingAddress()->getTelephone();
-            $this->_logger->info('Customer Mobile:', [$destination]);
+            $this->logger->info('Customer Mobile:', [$destination]);
 
             if ($destination) {
-                $origin = $this->_smsHelper->getRefundOrderSmsSenderId();
-                $message = $this->_smsHelper->getRefundOrderSmsText();
-                $adminNotify = $this->_smsHelper->getRefundOrderSmsAdminNotifyEnabled();
+                $origin = $this->smsHelper->getRefundOrderSmsSenderId();
+                $message = $this->smsHelper->getRefundOrderSmsText();
+                $adminNotify = $this->smsHelper->getRefundOrderSmsAdminNotifyEnabled();
                 $trigger = "Order Refunded";
-                $data = $this->_smsHelper->getOrderData($order);
+                $data = $this->smsHelper->getOrderData($order);
                 $data['CustomerTelephone'] = $destination;
-                $message = $this->_smsHelper->messageProcessor($message, $data);
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                $message = $this->smsHelper->messageProcessor($message, $data);
+                $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
             }
         }
     }

@@ -16,15 +16,15 @@ use Smsglobal\Sms\Logger\Logger as Logger;
 
 class OrderSaveAfter implements \Magento\Framework\Event\ObserverInterface
 {
-    protected $_smsHelper;
-    protected $_logger;
+    protected $smsHelper;
+    protected $logger;
 
 
     public function __construct(\Smsglobal\Sms\Helper\Sms $smsHelper, Logger $logger
     )
     {
-        $this->_smsHelper = $smsHelper;
-        $this->_logger = $logger;
+        $this->smsHelper = $smsHelper;
+        $this->logger = $logger;
     }
 
 
@@ -43,7 +43,7 @@ class OrderSaveAfter implements \Magento\Framework\Event\ObserverInterface
         $order = $observer->getEvent()->getOrder()->getData();
         $orderId = $order['increment_id'];
         $state = $order['state'];
-        $this->_logger->info('Order ID (state) & Order:', [$orderId, $state, $order]);
+        $this->logger->info('Order ID (state) & Order:', [$orderId, $state, $order]);
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $orderObj = $objectManager->get('Magento\Sales\Model\Order');
         $orderInformation = $orderObj->loadByIncrementId($orderId);
@@ -57,35 +57,35 @@ class OrderSaveAfter implements \Magento\Framework\Event\ObserverInterface
             }
         }
         if ($destination) {
-            if ($state == "new" && $this->_smsHelper->getNewOrderSmsEnabled()) {
-                $this->_logger->info('New order SMS Initiated', [$order]);
+            if ($state == "new" && $this->smsHelper->getNewOrderSmsEnabled()) {
+                $this->logger->info('New order SMS Initiated', [$order]);
                 $trigger = "New Order";
-                $origin = $this->_smsHelper->getNewOrderSmsSenderId();
-                $message = $this->_smsHelper->getNewOrderSmsText();
-                $adminNotify = $this->_smsHelper->getNewOrderSmsAdminNotifyEnabled();
+                $origin = $this->smsHelper->getNewOrderSmsSenderId();
+                $message = $this->smsHelper->getNewOrderSmsText();
+                $adminNotify = $this->smsHelper->getNewOrderSmsAdminNotifyEnabled();
                 $flag = true;
             }
-            if ($state == "holded" && $this->_smsHelper->getOrderHoldSmsEnabled()) {
-                $this->_logger->info('hold order SMS Initiated', [$order]);
+            if ($state == "holded" && $this->smsHelper->getOrderHoldSmsEnabled()) {
+                $this->logger->info('hold order SMS Initiated', [$order]);
                 $trigger = "Hold Order";
-                $origin = $this->_smsHelper->getOrderHoldSmsSenderId();
-                $message = $this->_smsHelper->getOrderHoldSmsText();
-                $adminNotify = $this->_smsHelper->getOrderHoldSmsAdminNotifyEnabled();
+                $origin = $this->smsHelper->getOrderHoldSmsSenderId();
+                $message = $this->smsHelper->getOrderHoldSmsText();
+                $adminNotify = $this->smsHelper->getOrderHoldSmsAdminNotifyEnabled();
                 $flag = true;
             }
-            if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'order/unhold') !== false && $this->_smsHelper->getOrderUnholdSmsEnabled()) {
-                $this->_logger->info('unhold order SMS Initiated', [$order]);
+            if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'order/unhold') !== false && $this->smsHelper->getOrderUnholdSmsEnabled()) {
+                $this->logger->info('unhold order SMS Initiated', [$order]);
                 $trigger = "Unhold Order";
-                $origin = $this->_smsHelper->getOrderUnholdSmsSenderId();
-                $message = $this->_smsHelper->getOrderUnholdSmsText();
-                $adminNotify = $this->_smsHelper->getOrderUnholdSmsAdminNotifyEnabled();
+                $origin = $this->smsHelper->getOrderUnholdSmsSenderId();
+                $message = $this->smsHelper->getOrderUnholdSmsText();
+                $adminNotify = $this->smsHelper->getOrderUnholdSmsAdminNotifyEnabled();
                 $flag = true;
             }
             if ($flag) {
-                $data = $this->_smsHelper->getOrderData($orderInformation);
+                $data = $this->smsHelper->getOrderData($orderInformation);
                 $data['CustomerTelephone'] = $destination;
-                $message = $this->_smsHelper->messageProcessor($message, $data);
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                $message = $this->smsHelper->messageProcessor($message, $data);
+                $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
             }
         }
     }
