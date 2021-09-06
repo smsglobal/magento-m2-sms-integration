@@ -38,7 +38,7 @@
 			<updateUrl path="mui/index/render"/>
 		</settings>
 		<aclResource>Smsglobal_Sms::Smslog</aclResource>
-        <dataProvider class="Smsglobal\Sms\Model\Smslog\ListingDataProvider" name="smsglobal_sms_smslog_listing_data_source">
+		<dataProvider class="Smsglobal\Sms\Model\Smslog\ListingDataProvider" name="smsglobal_sms_smslog_listing_data_source">
 			<settings>
 				<requestFieldName>id</requestFieldName>
 				<primaryFieldName>log_id</primaryFieldName>
