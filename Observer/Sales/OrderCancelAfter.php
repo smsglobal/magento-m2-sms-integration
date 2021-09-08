@@ -16,15 +16,15 @@ use Smsglobal\Sms\Logger\Logger as Logger;
 
 class OrderCancelAfter implements \Magento\Framework\Event\ObserverInterface
 {
-    protected $_smsHelper;
-    protected $_logger;
+    protected $smsHelper;
+    protected $logger;
 
 
     public function __construct(\Smsglobal\Sms\Helper\Sms $smsHelper, Logger $logger
     )
     {
-        $this->_smsHelper = $smsHelper;
-        $this->_logger = $logger;
+        $this->smsHelper = $smsHelper;
+        $this->logger = $logger;
     }
 
 
@@ -38,28 +38,28 @@ class OrderCancelAfter implements \Magento\Framework\Event\ObserverInterface
         \Magento\Framework\Event\Observer $observer
     )
     {
-        if ($this->_smsHelper->getCancelOrderSmsEnabled()) {
+        if ($this->smsHelper->getCancelOrderSmsEnabled()) {
 
             $orderObject = $observer->getEvent()->getOrder()->getData();
-            $this->_logger->info('Order data', $orderObject);
+            $this->logger->info('Order data', $orderObject);
 
             $orderId = $orderObject['entity_id'];
-            $this->_logger->info('Order Cancel SMS Initiated', [$orderId]);
+            $this->logger->info('Order Cancel SMS Initiated', [$orderId]);
 
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
             $destination = $order->getShippingAddress()->getTelephone();
-            $this->_logger->info('Customer Mobile:', [$destination]);
+            $this->logger->info('Customer Mobile:', [$destination]);
 
             if ($destination) {
-                $origin = $this->_smsHelper->getCancelOrderSmsSenderId();
-                $message = $this->_smsHelper->getCancelOrderSmsText();
-                $adminNotify = $this->_smsHelper->getCancelOrderSmsAdminNotifyEnabled();
+                $origin = $this->smsHelper->getCancelOrderSmsSenderId();
+                $message = $this->smsHelper->getCancelOrderSmsText();
+                $adminNotify = $this->smsHelper->getCancelOrderSmsAdminNotifyEnabled();
                 $trigger = "Order Canceled";
-                $data = $this->_smsHelper->getOrderData($order);
+                $data = $this->smsHelper->getOrderData($order);
                 $data['CustomerTelephone'] = $destination;
-                $message = $this->_smsHelper->messageProcessor($message, $data);
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                $message = $this->smsHelper->messageProcessor($message, $data);
+                $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
             }
 
         }

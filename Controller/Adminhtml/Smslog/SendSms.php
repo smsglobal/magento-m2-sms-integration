@@ -20,8 +20,8 @@ class SendSms extends \Magento\Backend\App\Action
      */
     protected $collectionFactory;
 
-    protected $_smsHelper;
-    protected $_logger;
+    protected $smsHelper;
+    protected $logger;
 
 
 
@@ -34,8 +34,8 @@ class SendSms extends \Magento\Backend\App\Action
     {
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
-        $this->_smsHelper = $smsHelper;
-        $this->_logger = $logger;
+        $this->smsHelper = $smsHelper;
+        $this->logger = $logger;
         parent::__construct($context);
     }
 
@@ -60,14 +60,14 @@ class SendSms extends \Magento\Backend\App\Action
             $customer = $objectManager->create('Magento\Customer\Model\Customer')->load($custid);
             $destination = $customer->getDefaultBillingAddress() ? $customer->getDefaultBillingAddress()->getTelephone() : ($customer->getDefaultShippingAddress() ? $customer->getDefaultShippingAddress()->getTelephone() : null);
             if ($destination) {
-                $data = $this->_smsHelper->getCustomerData($customer);
-                $this->_logger->info('Customer Message SMS Initiated', [$customer->getFirstName()]);
+                $data = $this->smsHelper->getCustomerData($customer);
+                $this->logger->info('Customer Message SMS Initiated', [$customer->getFirstName()]);
                 $trigger = "Customer Message";
                 $origin = $post['senderid'];
                 $message = $post['message'];
-                $message = $this->_smsHelper->messageProcessor($message, $data);
+                $message = $this->smsHelper->messageProcessor($message, $data);
                 $adminNotify = $post['adminnotify'];
-                $this->_smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
+                $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
                 $this->messageManager->addSuccess(__('Message Sent'));
             } else {
                 $this->messageManager->addError(__('Billing Telephone not found'));

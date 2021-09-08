@@ -17,9 +17,9 @@ use Smsglobal\Sms\Logger\Logger as Logger;
 class UpdateSmsStatus
 {
 
-    protected $_logger;
-    protected $_smslogFactory;
-    protected $_smsHelper;
+    protected $logger;
+    protected $smslogFactory;
+    protected $smsHelper;
 
     /**
      * Constructor
@@ -30,9 +30,9 @@ class UpdateSmsStatus
      */
     public function __construct(\Smsglobal\Sms\Helper\Sms $smsHelper, Logger $logger, \Smsglobal\Sms\Model\ResourceModel\Smslog\CollectionFactory $smslogFactory)
     {
-        $this->_logger = $logger;
-        $this->_smslogFactory = $smslogFactory;
-        $this->_smsHelper = $smsHelper;
+        $this->logger = $logger;
+        $this->smslogFactory = $smslogFactory;
+        $this->smsHelper = $smsHelper;
     }
 
     /**
@@ -42,13 +42,13 @@ class UpdateSmsStatus
      */
     public function execute()
     {
-        $this->_logger->info('Smsglobal Cron Initiated', []);
-        $smslogObj = $this->_smslogFactory->create();
+        $this->logger->info('Smsglobal Cron Initiated', []);
+        $smslogObj = $this->smslogFactory->create();
         $smslogCollection = $smslogObj->addFieldToFilter('status', array('eq' => 'Pending', 'eq' => 'Processing'));
         foreach ($smslogCollection as $smslog) {
             $messageId = $smslog->getMsgId();
-            $status = $this->_smsHelper->getSmsStatus($messageId);
-            $this->_logger->info('Smsglobal Cron Initiated', [$status]);
+            $status = $this->smsHelper->getSmsStatus($messageId);
+            $this->logger->info('Smsglobal Cron Initiated', [$status]);
             if ($status) {
                 $smslog->setStatus($status);
                 $smslog->save();

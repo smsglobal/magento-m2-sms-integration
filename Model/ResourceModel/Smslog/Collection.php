@@ -18,6 +18,15 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 
 
     /**
+     * @inheritdoc
+     */
+    protected function _initSelect()
+    {
+        $this->addFilterToMap('trigger', 'main_table.trigger');
+        parent::_initSelect();
+        return $this;
+    }
+    /**
      * Define resource model
      *
      * @return void

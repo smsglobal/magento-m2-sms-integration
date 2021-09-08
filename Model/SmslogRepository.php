@@ -11,6 +11,8 @@
 
 namespace Smsglobal\Sms\Model;
 
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\App\ObjectManager;
 use Smsglobal\Sms\Api\SmslogRepositoryInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Reflection\DataObjectProcessor;
@@ -49,6 +51,11 @@ class SmslogRepository implements SmslogRepositoryInterface
     protected $extensibleDataObjectConverter;
 
     /**
+     * @var CollectionProcessorInterface
+     */
+    private $collectionProcessor;
+
+    /**
      * @param ResourceSmslog $resource
      * @param SmslogFactory $smslogFactory
      * @param SmslogInterfaceFactory $dataSmslogFactory
@@ -59,6 +66,7 @@ class SmslogRepository implements SmslogRepositoryInterface
      * @param StoreManagerInterface $storeManager
      * @param JoinProcessorInterface $extensionAttributesJoinProcessor
      * @param ExtensibleDataObjectConverter $extensibleDataObjectConverter
+     * @param CollectionProcessorInterface|null $collectionProcessor
      */
     public function __construct(
         ResourceSmslog $resource,
@@ -70,7 +78,8 @@ class SmslogRepository implements SmslogRepositoryInterface
         DataObjectProcessor $dataObjectProcessor,
         StoreManagerInterface $storeManager,
         JoinProcessorInterface $extensionAttributesJoinProcessor,
-        ExtensibleDataObjectConverter $extensibleDataObjectConverter
+        ExtensibleDataObjectConverter $extensibleDataObjectConverter,
+        CollectionProcessorInterface $collectionProcessor = null
     ) {
         $this->resource = $resource;
         $this->smslogFactory = $smslogFactory;
@@ -80,7 +89,8 @@ class SmslogRepository implements SmslogRepositoryInterface
         $this->dataSmslogFactory = $dataSmslogFactory;
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->storeManager = $storeManager;
-        $this->collectionProcessor = $collectionProcessor;
+        $this->collectionProcessor = $collectionProcessor ?: ObjectManager::getInstance()
+                                                                          ->get(\Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface::class);
         $this->extensionAttributesJoinProcessor = $extensionAttributesJoinProcessor;
         $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
     }

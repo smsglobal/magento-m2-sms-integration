@@ -18,9 +18,12 @@ use Smsglobal\Sms\Logger\Logger as Logger;
 class Sms extends AbstractHelper
 {
 
-    protected $_objectInterface;
-    protected $_objectManager;
-    protected $_logger;
+    protected $objectInterface;
+    protected $objectManager;
+    /**
+     * @var Logger
+     */
+    protected $logger;
 
     /**
      * @var Magento\Framework\Stdlib\DateTime\TimezoneInterface
@@ -31,9 +34,9 @@ class Sms extends AbstractHelper
 
     public function __construct(Context $context, Logger $logger,\Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface)
     {
-        $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $this->_objectInterface = $this->_objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
-        $this->_logger = $logger;
+        $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->objectInterface = $this->objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
+        $this->logger = $logger;
         $this->_timezoneInterface = $timezoneInterface;
         parent::__construct($context);
     }
@@ -45,7 +48,7 @@ class Sms extends AbstractHelper
     public
     function getApiKey()
     {
-        return $this->_objectInterface->getValue('generalsettings/smsglobalsettings/apikey');
+        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/apikey');
     }
 
     /**
@@ -55,7 +58,7 @@ class Sms extends AbstractHelper
     public
     function getApiUrl()
     {
-        return $this->_objectInterface->getValue('generalsettings/smsglobalsettings/apiurl');
+        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/apiurl');
     }
 
     /**
@@ -65,7 +68,7 @@ class Sms extends AbstractHelper
     public
     function getSecretKey()
     {
-        return $this->_objectInterface->getValue('generalsettings/smsglobalsettings/secretkey');
+        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/secretkey');
     }
 
     /**
@@ -75,7 +78,7 @@ class Sms extends AbstractHelper
     public
     function getSenderId()
     {
-        return $this->_objectInterface->getValue('generalsettings/smsglobalsettings/senderid');
+        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/senderid');
     }
 
     /**
@@ -85,7 +88,7 @@ class Sms extends AbstractHelper
     public
     function getStoreMobileNumber()
     {
-        return $this->_objectInterface->getValue('generalsettings/smsglobalsettings/storemobile');
+        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/storemobile');
     }
 
     /**
@@ -95,7 +98,7 @@ class Sms extends AbstractHelper
     public
     function getTestSmsText()
     {
-        return $this->_objectInterface->getValue('generalsettings/testsmssettings/testsmstext');
+        return $this->objectInterface->getValue('generalsettings/testsmssettings/testsmstext');
     }
 
     /**
@@ -105,7 +108,7 @@ class Sms extends AbstractHelper
     public
     function getTestMobileNumber()
     {
-        return $this->_objectInterface->getValue('generalsettings/testsmssettings/testmobilenumber');
+        return $this->objectInterface->getValue('generalsettings/testsmssettings/testmobilenumber');
     }
 
     /**
@@ -114,7 +117,7 @@ class Sms extends AbstractHelper
      */
     public function getNewCustomerSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/newcustomer/enabled');
+        return $this->objectInterface->getValue('smstriggers/newcustomer/enabled');
     }
 
     /**
@@ -123,7 +126,7 @@ class Sms extends AbstractHelper
      */
     public function getNewCustomerSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/newcustomer/smstext');
+        return $this->objectInterface->getValue('smstriggers/newcustomer/smstext');
     }
 
     /**
@@ -132,7 +135,7 @@ class Sms extends AbstractHelper
      */
     public function getNewCustomerSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/newcustomer/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/newcustomer/adminnotify');
     }
 
     /**
@@ -141,7 +144,7 @@ class Sms extends AbstractHelper
      */
     public function getNewCustomerSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/newcustomer/senderid');
+        return $this->objectInterface->getValue('smstriggers/newcustomer/senderid');
     }
 
 
@@ -151,7 +154,7 @@ class Sms extends AbstractHelper
      */
     public function getNewOrderSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/neworder/enabled');
+        return $this->objectInterface->getValue('smstriggers/neworder/enabled');
     }
 
     /**
@@ -160,7 +163,7 @@ class Sms extends AbstractHelper
      */
     public function getNewOrderSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/neworder/smstext');
+        return $this->objectInterface->getValue('smstriggers/neworder/smstext');
     }
 
     /**
@@ -169,7 +172,7 @@ class Sms extends AbstractHelper
      */
     public function getNewOrderSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/neworder/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/neworder/adminnotify');
     }
 
     /**
@@ -178,7 +181,7 @@ class Sms extends AbstractHelper
      */
     public function getNewOrderSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/neworder/senderid');
+        return $this->objectInterface->getValue('smstriggers/neworder/senderid');
     }
 
     /**
@@ -187,7 +190,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderPaidSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderpaid/enabled');
+        return $this->objectInterface->getValue('smstriggers/orderpaid/enabled');
     }
 
     /**
@@ -196,7 +199,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderPaidSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderpaid/smstext');
+        return $this->objectInterface->getValue('smstriggers/orderpaid/smstext');
     }
 
     /**
@@ -205,7 +208,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderPaidSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderpaid/sendadmin');
+        return $this->objectInterface->getValue('smstriggers/orderpaid/sendadmin');
     }
 
     /**
@@ -214,7 +217,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderPaidSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderpaid/senderid');
+        return $this->objectInterface->getValue('smstriggers/orderpaid/senderid');
     }
 
 
@@ -224,7 +227,7 @@ class Sms extends AbstractHelper
      */
     public function getRefundOrderSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/refundorder/senderid');
+        return $this->objectInterface->getValue('smstriggers/refundorder/senderid');
     }
 
     /**
@@ -233,7 +236,7 @@ class Sms extends AbstractHelper
      */
     public function getRefundOrderSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/refundorder/smstext');
+        return $this->objectInterface->getValue('smstriggers/refundorder/smstext');
     }
 
     /**
@@ -242,7 +245,7 @@ class Sms extends AbstractHelper
      */
     public function getRefundOrderSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/refundorder/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/refundorder/adminnotify');
     }
 
     /**
@@ -251,7 +254,7 @@ class Sms extends AbstractHelper
      */
     public function getRefundOrderSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/refundorder/senderid');
+        return $this->objectInterface->getValue('smstriggers/refundorder/senderid');
     }
 
     /**
@@ -260,7 +263,7 @@ class Sms extends AbstractHelper
      */
     public function getCancelOrderSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/ordercancel/enabled');
+        return $this->objectInterface->getValue('smstriggers/ordercancel/enabled');
     }
 
     /**
@@ -269,7 +272,7 @@ class Sms extends AbstractHelper
      */
     public function getCancelOrderSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/ordercancel/smstext');
+        return $this->objectInterface->getValue('smstriggers/ordercancel/smstext');
     }
 
     /**
@@ -278,7 +281,7 @@ class Sms extends AbstractHelper
      */
     public function getCancelOrderSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/ordercancel/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/ordercancel/adminnotify');
     }
 
     /**
@@ -287,7 +290,7 @@ class Sms extends AbstractHelper
      */
     public function getCancelOrderSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/ordercancel/senderid');
+        return $this->objectInterface->getValue('smstriggers/ordercancel/senderid');
     }
 
     /**
@@ -296,7 +299,7 @@ class Sms extends AbstractHelper
      */
     public function getNewShipmentSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/newshipment/enabled');
+        return $this->objectInterface->getValue('smstriggers/newshipment/enabled');
     }
 
     /**
@@ -305,7 +308,7 @@ class Sms extends AbstractHelper
      */
     public function getNewShipmentSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/newshipment/smstext');
+        return $this->objectInterface->getValue('smstriggers/newshipment/smstext');
     }
 
     /**
@@ -314,7 +317,7 @@ class Sms extends AbstractHelper
      */
     public function getNewShipmentSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/newshipment/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/newshipment/adminnotify');
     }
 
     /**
@@ -323,7 +326,7 @@ class Sms extends AbstractHelper
      */
     public function getNewShipmentSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/newshipment/senderid');
+        return $this->objectInterface->getValue('smstriggers/newshipment/senderid');
     }
 
     /**
@@ -332,7 +335,7 @@ class Sms extends AbstractHelper
      */
     public function getShipmentUpdatesSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/shipmentupdates/enabled');
+        return $this->objectInterface->getValue('smstriggers/shipmentupdates/enabled');
     }
 
     /**
@@ -341,7 +344,7 @@ class Sms extends AbstractHelper
      */
     public function getShipmentUpdatesSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/shipmentupdates/smstext');
+        return $this->objectInterface->getValue('smstriggers/shipmentupdates/smstext');
     }
 
     /**
@@ -350,7 +353,7 @@ class Sms extends AbstractHelper
      */
     public function getShipmentUpdatesSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/shipmentupdates/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/shipmentupdates/adminnotify');
     }
 
     /**
@@ -359,7 +362,7 @@ class Sms extends AbstractHelper
      */
     public function getShipmentUpdatesSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/shipmentupdates/senderid');
+        return $this->objectInterface->getValue('smstriggers/shipmentupdates/senderid');
     }
 
     /**
@@ -368,7 +371,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderHoldSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderhold/enabled');
+        return $this->objectInterface->getValue('smstriggers/orderhold/enabled');
     }
 
     /**
@@ -377,7 +380,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderHoldSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderhold/smstext');
+        return $this->objectInterface->getValue('smstriggers/orderhold/smstext');
     }
 
     /**
@@ -386,7 +389,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderHoldSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderhold/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/orderhold/adminnotify');
     }
 
     /**
@@ -395,7 +398,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderHoldSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderhold/senderid');
+        return $this->objectInterface->getValue('smstriggers/orderhold/senderid');
     }
 
     /**
@@ -404,7 +407,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderUnholdSmsEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderunhold/enabled');
+        return $this->objectInterface->getValue('smstriggers/orderunhold/enabled');
     }
 
     /**
@@ -413,7 +416,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderUnholdSmsText()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderunhold/smstext');
+        return $this->objectInterface->getValue('smstriggers/orderunhold/smstext');
     }
 
     /**
@@ -422,7 +425,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderUnholdSmsAdminNotifyEnabled()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderunhold/adminnotify');
+        return $this->objectInterface->getValue('smstriggers/orderunhold/adminnotify');
     }
 
     /**
@@ -431,7 +434,7 @@ class Sms extends AbstractHelper
      */
     public function getOrderUnholdSmsSenderId()
     {
-        return $this->_objectInterface->getValue('smstriggers/orderunhold/senderid');
+        return $this->objectInterface->getValue('smstriggers/orderunhold/senderid');
     }
 
 
@@ -528,7 +531,7 @@ class Sms extends AbstractHelper
         }
 
 
-        $productMetadata = $this->_objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        $productMetadata = $this->objectManager->get('Magento\Framework\App\ProductMetadataInterface');
         $version = $productMetadata->getVersion();
 
         $agent = "SMSGlobal-Integrations/1.0, Magento-m2/" . $version;
@@ -540,7 +543,7 @@ class Sms extends AbstractHelper
         $output = curl_exec($curlRequest);
 
         if (curl_error($curlRequest)) {
-            $this->_logger->addInfo("SMS:", [$output]);
+            $this->logger->addInfo("SMS:", [$output]);
             return;
         }
 
@@ -551,7 +554,7 @@ class Sms extends AbstractHelper
             $results = json_decode($output);
 
 
-            $this->_logger->addInfo("SMS:", [$results]); // log string Data to customfile.log
+            $this->logger->addInfo("SMS:", [$results]); // log string Data to customfile.log
 
             if (property_exists($results, 'messages')) {
 
@@ -566,11 +569,11 @@ class Sms extends AbstractHelper
                     $data['store_id'] = 1;
                     $data['trigger'] = $trigger;
                     $data['comment'] = $output;
-                    $model = $this->_objectManager->create(\Smsglobal\Sms\Model\Smslog::class);
+                    $model = $this->objectManager->create(\Smsglobal\Sms\Model\Smslog::class);
                     try {
                         $model->setData($data)->save();
                     } catch (\Exception $e) {
-                        $this->_logger->addInfo("Error", [$e->getMessage()]);
+                        $this->logger->addInfo("Error", [$e->getMessage()]);
                     }
                 }
             }
@@ -607,7 +610,7 @@ class Sms extends AbstractHelper
 
         $output = curl_exec($curlRequest);
 
-        $this->_logger->addInfo("Balance:", [$output]);
+        $this->logger->addInfo("Balance:", [$output]);
 
 
         $result = json_decode($output);
@@ -656,7 +659,7 @@ class Sms extends AbstractHelper
         }
 
         $output = curl_exec($curlRequest);
-        $this->_logger->addInfo("Status:", [$output]);
+        $this->logger->addInfo("Status:", [$output]);
 
         $result = json_decode($output);
 
