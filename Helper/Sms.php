@@ -13,6 +13,7 @@ namespace Smsglobal\Sms\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Setup\Exception;
 use Smsglobal\Sms\Logger\Logger as Logger;
 
 class Sms extends AbstractHelper
@@ -32,7 +33,7 @@ class Sms extends AbstractHelper
 
     const CHAR_MAP = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTWXYZ0123456789';
 
-    public function __construct(Context $context, Logger $logger,\Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface)
+    public function __construct(Context $context, Logger $logger, \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface)
     {
         $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $this->objectInterface = $this->objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
@@ -45,38 +46,34 @@ class Sms extends AbstractHelper
      * Returns API Key from Store Configuration
      * @return string
      */
-    public
-    function getApiKey()
+    public function getApiKey()
     {
-        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/apikey');
+        return trim($this->objectInterface->getValue('generalsettings/smsglobalsettings/apikey'));
     }
 
     /**
      * Returns API URL from Store Configuration
      * @return string
      */
-    public
-    function getApiUrl()
+    public function getApiUrl()
     {
-        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/apiurl');
+        return trim($this->objectInterface->getValue('generalsettings/smsglobalsettings/apiurl'));
     }
 
     /**
      * Returns Secret Key from Store Configuration
      * @return string
      */
-    public
-    function getSecretKey()
+    public function getSecretKey()
     {
-        return $this->objectInterface->getValue('generalsettings/smsglobalsettings/secretkey');
+        return trim($this->objectInterface->getValue('generalsettings/smsglobalsettings/secretkey'));
     }
 
     /**
      * Returns Sender ID from Store Configuration
      * @return string
      */
-    public
-    function getSenderId()
+    public function getSenderId()
     {
         return $this->objectInterface->getValue('generalsettings/smsglobalsettings/senderid');
     }
@@ -85,8 +82,7 @@ class Sms extends AbstractHelper
      * Returns Store Mobile Number from Store Configuration
      * @return string
      */
-    public
-    function getStoreMobileNumber()
+    public function getStoreMobileNumber()
     {
         return $this->objectInterface->getValue('generalsettings/smsglobalsettings/storemobile');
     }
@@ -95,8 +91,7 @@ class Sms extends AbstractHelper
      * Returns Test SMS Text from Store Configuration
      * @return string
      */
-    public
-    function getTestSmsText()
+    public function getTestSmsText()
     {
         return $this->objectInterface->getValue('generalsettings/testsmssettings/testsmstext');
     }
@@ -105,8 +100,7 @@ class Sms extends AbstractHelper
      * Returns Test Mobile Number from Store Configuration
      * @return string
      */
-    public
-    function getTestMobileNumber()
+    public function getTestMobileNumber()
     {
         return $this->objectInterface->getValue('generalsettings/testsmssettings/testmobilenumber');
     }
@@ -146,7 +140,6 @@ class Sms extends AbstractHelper
     {
         return $this->objectInterface->getValue('smstriggers/newcustomer/senderid');
     }
-
 
     /**
      * Returns whether new order sms is enabled or not
@@ -219,7 +212,6 @@ class Sms extends AbstractHelper
     {
         return $this->objectInterface->getValue('smstriggers/orderpaid/senderid');
     }
-
 
     /**
      * Returns whether order refund sms is enabled or not
@@ -437,14 +429,12 @@ class Sms extends AbstractHelper
         return $this->objectInterface->getValue('smstriggers/orderunhold/senderid');
     }
 
-
     /**
      * @param int $length
      *
      * @return string
      */
-    public
-    function createRandomString($length = 10)
+    public function createRandomString($length = 10)
     {
         $result = '';
         $size = strlen(self::CHAR_MAP);
@@ -464,19 +454,16 @@ class Sms extends AbstractHelper
      *
      * @return string
      */
-    public
-    function generateMacHeader($apikey, $secret, $method = 'POST', $uri = '/v2/sms/', $host = 'api.smsglobal.com', $port = 443, $extraData = '')
+    public function generateMacHeader($apikey, $secret, $method = 'POST', $uri = '/v2/sms/', $host = 'api.smsglobal.com', $port = 443, $extraData = '')
     {
 
         $timestamp = time();
         $nonce = $this->createRandomString();
 
-
         $rawString = $timestamp . "\n" . $nonce . "\n" . $method . "\n" . $uri . "\n" . $host . "\n" . $port . "\n" . $extraData . "\n";
         $hashHeader = base64_encode(hash_hmac('sha256', $rawString, $secret, true));
 
         return "MAC id=\"$apikey\", ts=\"$timestamp\", nonce=\"$nonce\", mac=\"$hashHeader\"";
-
     }
 
     /**
@@ -486,29 +473,12 @@ class Sms extends AbstractHelper
      * @param null $messageDate
      * @param string $trigger
      * @param bool $adminNotify
-     * @throws Exception
+     *
      * @return null
+     * @throws Exception
      */
-    public
-    function sendSms($origin, $destination, $message, $messageDate = null, $trigger = "Message", $adminNotify = false)
+    public function sendSms($origin, $destination, $message, $messageDate = null, $trigger = "Message", $adminNotify = false)
     {
-        $apikey = $this->getApiKey();
-        $secret = $this->getSecretKey();
-
-        if ($apikey == '' && $secret == '') {
-            return 'No API/Secret key Provided';
-        }
-
-        $mac = $this->generateMacHeader($apikey, $secret);
-
-        $curlRequest = curl_init();
-        curl_setopt($curlRequest, CURLOPT_URL, $this->getApiUrl());
-        curl_setopt($curlRequest, CURLOPT_HTTPHEADER, [
-            "Authorization: $mac",
-            'Content-Type: application/json',
-            'Accept: application/json',
-        ]);
-
         $origin = $origin ? $origin : $this->getSenderId();
         $destinationList = explode(",", $destination);
 
@@ -530,29 +500,14 @@ class Sms extends AbstractHelper
             $trigger = "Scheduled Message";
         }
 
-
-        $productMetadata = $this->objectManager->get('Magento\Framework\App\ProductMetadataInterface');
-        $version = $productMetadata->getVersion();
-
-        $agent = "SMSGlobal-Integrations/1.0, Magento-m2/" . $version;
-        curl_setopt($curlRequest, CURLOPT_USERAGENT, $agent);
-        curl_setopt($curlRequest, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curlRequest, CURLOPT_POST, true);
-        curl_setopt($curlRequest, CURLOPT_POSTFIELDS, json_encode($data));
-
-        $output = curl_exec($curlRequest);
-
-        if (curl_error($curlRequest)) {
-            $this->logger->addInfo("SMS:", [$output]);
-            return;
+        try {
+            $output = $this->sendRequest('POST', '/v2/sms', $data);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
-
-        curl_close($curlRequest);
-
 
         if ($output) {
             $results = json_decode($output);
-
 
             $this->logger->addInfo("SMS:", [$results]); // log string Data to customfile.log
 
@@ -561,7 +516,8 @@ class Sms extends AbstractHelper
                 foreach ($results->messages as $result) {
                     $data = [];
                     $data['msg_id'] = $result->outgoing_id;
-                    $data['msg_date'] = property_exists($result, 'scheduledDatetime') ? $this->getTimeAccordingToTimeZone($result->scheduledDatetime) : $this->getTimeAccordingToTimeZone($result->dateTime);
+                    $data['msg_date'] = property_exists($result, 'scheduledDatetime') ? $this->getTimeAccordingToTimeZone($result->scheduledDatetime)
+                        : $this->getTimeAccordingToTimeZone($result->dateTime);
                     $data['origin'] = $result->origin;
                     $data['destination'] = $result->destination;
                     $data['message'] = $result->message;
@@ -578,44 +534,25 @@ class Sms extends AbstractHelper
                 }
             }
         }
-
     }
 
     /**
      * @return string
      */
-    public
-    function getBalance()
+    public function getBalance()
     {
-        $apikey = $this->getApiKey();
-        $secret = $this->getSecretKey();
-
-        if ($apikey == '' && $secret == '') {
-            return 'No API/Secret key Provided';
+        try {
+            $output = $this->sendRequest('GET', '/v2/user/credit-balance');
+        } catch (\Exception $e) {
+            return "<strong><p style='color:#ff0000'>" . $e->getMessage() . "</p></strong>";
         }
-
-        $mac = $this->generateMacHeader($apikey, $secret, 'GET', '/v2/user/credit-balance');
-
-        $curlRequest = curl_init();
-        curl_setopt($curlRequest, CURLOPT_URL, 'https://api.smsglobal.com/v2/user/credit-balance');
-        curl_setopt($curlRequest, CURLOPT_HTTPHEADER, [
-            "Authorization: $mac",
-            'Content-Type: application/json',
-            'Accept: application/json',
-        ]);
-        curl_setopt($curlRequest, CURLOPT_RETURNTRANSFER, true);
-        if (curl_error($curlRequest)) {
-            return 'Retry again';
-        }
-
-        $output = curl_exec($curlRequest);
-
-        $this->logger->addInfo("Balance:", [$output]);
-
 
         $result = json_decode($output);
 
         if ($result) {
+
+            $this->logger->addInfo("Balance:", [$result]);
+
             if (property_exists($result, 'status')) {
                 return "Postpaid";
             } elseif (property_exists($result, 'code')) {
@@ -623,9 +560,6 @@ class Sms extends AbstractHelper
             } else {
                 return "<strong>" . $result->currency . " " . $result->balance . "</strong>";
             }
-        } else {
-            return "<strong><font color='red'>" . $output . "</font></strong>";
-
         }
     }
 
@@ -634,8 +568,7 @@ class Sms extends AbstractHelper
      *
      * @return string
      */
-    public
-    function getSmsStatus($messageId)
+    public function getSmsStatus($messageId)
     {
         $apikey = $this->getApiKey();
         $secret = $this->getSecretKey();
@@ -644,21 +577,12 @@ class Sms extends AbstractHelper
             return 'No API/Secret key Provided';
         }
 
-        $mac = $this->generateMacHeader($apikey, $secret, 'GET', '/v2/sms/' . $messageId);
-
-        $curlRequest = curl_init();
-        curl_setopt($curlRequest, CURLOPT_URL, 'https://api.smsglobal.com/v2/sms/' . $messageId);
-        curl_setopt($curlRequest, CURLOPT_HTTPHEADER, [
-            "Authorization: $mac",
-            'Content-Type: application/json',
-            'Accept: application/json',
-        ]);
-        curl_setopt($curlRequest, CURLOPT_RETURNTRANSFER, true);
-        if (curl_error($curlRequest)) {
-            return 'Retry again';
+        try {
+            $output = $this->sendRequest("GET", '/v2/sms/' . $messageId);
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
 
-        $output = curl_exec($curlRequest);
         $this->logger->addInfo("Status:", [$output]);
 
         $result = json_decode($output);
@@ -672,8 +596,7 @@ class Sms extends AbstractHelper
      *
      * @return string
      */
-    public
-    function messageProcessor($message, $data)
+    public function messageProcessor($message, $data)
     {
         foreach ($data as $key => $value) {
             $message = str_replace('{' . $key . '}', $value, $message);
@@ -687,8 +610,7 @@ class Sms extends AbstractHelper
      *
      * @return array
      */
-    public
-    function getOrderData($order)
+    public function getOrderData($order)
     {
         $data = [];
         $data['OrderNumber'] = $order->getIncrementId();
@@ -710,8 +632,7 @@ class Sms extends AbstractHelper
      *
      * @return array
      */
-    public
-    function getShipmentData($order, $shipment)
+    public function getShipmentData($order, $shipment)
     {
         $data = [];
 
@@ -721,7 +642,6 @@ class Sms extends AbstractHelper
 
             $data['TrackingNumber'] = $track->getTrackNumber();
             $data['Carrier'] = $track->getCarrierCode();
-
         }
 
         return $data;
@@ -732,8 +652,7 @@ class Sms extends AbstractHelper
      *
      * @return array
      */
-    public
-    function getInvoiceData($order)
+    public function getInvoiceData($order)
     {
         $data = [];
         $data['PaymentMode'] = $order->getPayment()->getMethodInstance()->getCode();
@@ -746,8 +665,7 @@ class Sms extends AbstractHelper
      *
      * @return array
      */
-    public
-    function getCustomerData($customer)
+    public function getCustomerData($customer)
     {
         $data = [];
         $data['CustomerFirstName'] = $customer->getFirstname();
@@ -758,16 +676,17 @@ class Sms extends AbstractHelper
         return $data;
     }
 
-    public
-    function datetimeconv($datetime)
+    public function datetimeconv($datetime)
     {
-        $datetime =  new \DateTime(str_replace('T', ' ', substr($datetime,0,-5)));
+        $datetime = new \DateTime(str_replace('T', ' ', substr($datetime, 0, -5)));
         $to = ['localeFormat' => "Y-m-d H:i:s", 'olsonZone' => 'UTC'];
+
         return $datetime->format($to['localeFormat']);
     }
 
     /**
      * @param string $dateTime
+     *
      * @return string $dateTime as time zone
      * @throws
      */
@@ -777,10 +696,75 @@ class Sms extends AbstractHelper
         $today = $this->_timezoneInterface->date()->format('m/d/y H:i:s');
 
         // for convert date time according to magento time zone
-        $dateTimeAsTimeZone = $this->_timezoneInterface
-            ->date(new \DateTime($dateTime))
-            ->format('m/d/y H:i:s');
+        $dateTimeAsTimeZone = $this->_timezoneInterface->date(new \DateTime($dateTime))->format('m/d/y H:i:s');
+
         return $dateTimeAsTimeZone;
     }
 
+    private function sendRequest($method, $uri, $data = null)
+    {
+        $apikey = $this->getApiKey();
+        $secret = $this->getSecretKey();
+        $method = strtoupper($method);
+
+        if ($apikey == '' && $secret == '') {
+            throw new \Exception('No API/Secret key Provided');
+        }
+
+        // API url was supposed to be host only but it's referenced with send sms endpoint -> `https://api.smsglobal.com/v2/sms/`
+        // Avoiding change in the config in order prevent any surprise in the case of plugin upgrade
+        if (strpos($this->getApiUrl(), '/v2/sms/')) {
+            $url = substr($this->getApiUrl(), 0, strpos($this->getApiUrl(), '/v2/sms/'));
+        } else {
+            $url = $this->getApiUrl();
+        }
+
+        $url = rtrim($url, '/'). $uri;
+
+        $productMetadata = $this->objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+        $agent = "SMSGlobal-Integrations/1.0, Magento-m2/" . $productMetadata->getVersion();
+
+        $mac = $this->generateMacHeader($apikey, $secret, $method, $uri);
+
+        $curl = curl_init();
+        $curlParams = [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                "Authorization: $mac",
+                'Content-Type: application/json',
+                'Accept: application/json',
+            ],
+            CURLOPT_USERAGENT => $agent,
+        ];
+
+        $this->logger->addInfo(sprintf("Request URL: %s, %s", $method, $url));
+
+        if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
+            $this->logger->addInfo(sprintf("Request payload: %s", json_encode($data)));
+            $curlParams[CURLOPT_CUSTOMREQUEST] = $method;
+            $curlParams[CURLOPT_POSTFIELDS] = json_encode($data);
+        }
+
+        curl_setopt_array($curl, $curlParams);
+
+        $response = curl_exec($curl);
+
+        $err = curl_error($curl);
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        $this->logger->addInfo(sprintf("Response status code: %s", $statusCode));
+
+        if ($err) {
+            $this->logger->addError('Error:' . $err);
+
+            throw new \Exception('Retry again.');
+        }
+
+        $this->logger->addInfo("Response:", [$response]);
+
+        return $response;
+    }
 }

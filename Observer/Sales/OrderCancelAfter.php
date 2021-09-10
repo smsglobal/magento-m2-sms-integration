@@ -48,7 +48,17 @@ class OrderCancelAfter implements \Magento\Framework\Event\ObserverInterface
 
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
-            $destination = $order->getShippingAddress()->getTelephone();
+
+            $address = $order->getShippingAddress() ?? $order->getBillingAddress();
+
+            if (($address instanceof \Magento\Sales\Model\Order\Address) === false)
+            {
+                $this->logger->info("Billing/Shipping address not found");
+
+                return;
+            }
+
+            $destination = $address->getTelephone();
             $this->logger->info('Customer Mobile:', [$destination]);
 
             if ($destination) {
