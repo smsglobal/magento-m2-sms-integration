@@ -51,8 +51,7 @@ class OrderCancelAfter implements \Magento\Framework\Event\ObserverInterface
 
             $address = $order->getShippingAddress() ?? $order->getBillingAddress();
 
-            if (($address instanceof \Magento\Sales\Model\Order\Address) === false)
-            {
+            if (($address instanceof \Magento\Sales\Model\Order\Address) === false) {
                 $this->logger->info("Billing/Shipping address not found");
 
                 return;
