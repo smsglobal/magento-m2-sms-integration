@@ -47,16 +47,29 @@ class OrderSaveAfter implements \Magento\Framework\Event\ObserverInterface
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $orderObj = $objectManager->get('Magento\Sales\Model\Order');
         $orderInformation = $orderObj->loadByIncrementId($orderId);
-        if ($orderInformation->getShippingAddress()) {
-            $destination = $orderInformation->getShippingAddress()->getTelephone();
+
+
+        $address = $orderInformation->getShippingAddress() ?? $orderInformation->getBillingAddress();
+
+        if (($address instanceof \Magento\Sales\Model\Order\Address)) {
+            $destination = $address->getTelephone();
         } else {
+
+            if (isset($order['addresses']) === false) {
+                $this->logger->info("Billing/Shipping address not found");
+
+                return;
+            }
+
             foreach ($order['addresses'] as $addr) {
                 if ($addr['telephone'] !== null) {
                     $destination = $addr['telephone'];
                 }
             }
         }
+
         if ($destination) {
+            $this->logger->info('Customer Mobile:', [$destination]);
             if ($state == "new" && $this->smsHelper->getNewOrderSmsEnabled()) {
                 $this->logger->info('New order SMS Initiated', [$order]);
                 $trigger = "New Order";
@@ -87,6 +100,8 @@ class OrderSaveAfter implements \Magento\Framework\Event\ObserverInterface
                 $message = $this->smsHelper->messageProcessor($message, $data);
                 $this->smsHelper->sendSms($origin, $destination, $message, null, $trigger, $adminNotify);
             }
+        } else {
+            $this->logger->info('Customer does not have phone number associated to his billing/shipping address.');
         }
     }
 }
