@@ -23,7 +23,7 @@
                 <field id="apiurl" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="2" translate="label"
                        type="text">
                     <label>API URL</label>
-                    <comment>API URL - https://api.smsglobal.com/v2/sms/</comment>
+                    <comment>API URL - https://api.smsglobal.com/</comment>
                     <validate>required-entry</validate>
                 </field>
                 <field id="apikey" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="3" translate="label"

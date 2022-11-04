@@ -509,7 +509,7 @@ class Sms extends AbstractHelper
         if ($output) {
             $results = json_decode($output);
 
-            $this->logger->addInfo("SMS:", [$results]); // log string Data to customfile.log
+            $this->logger->info("SMS:", [$results]); // log string Data to customfile.log
 
             if (property_exists($results, 'messages')) {
 
@@ -529,7 +529,7 @@ class Sms extends AbstractHelper
                     try {
                         $model->setData($data)->save();
                     } catch (\Exception $e) {
-                        $this->logger->addInfo("Error", [$e->getMessage()]);
+                        $this->logger->info("Error", [$e->getMessage()]);
                     }
                 }
             }
@@ -551,7 +551,7 @@ class Sms extends AbstractHelper
 
         if ($result) {
 
-            $this->logger->addInfo("Balance:", [$result]);
+            $this->logger->info("Balance:", [$result]);
 
             if (property_exists($result, 'status')) {
                 return "Postpaid";
@@ -583,7 +583,7 @@ class Sms extends AbstractHelper
             return $e->getMessage();
         }
 
-        $this->logger->addInfo("Status:", [$output]);
+        $this->logger->info("Status:", [$output]);
 
         $result = json_decode($output);
 
@@ -713,7 +713,7 @@ class Sms extends AbstractHelper
 
         // API url was supposed to be host only but it's referenced with send sms endpoint -> `https://api.smsglobal.com/v2/sms/`
         // Avoiding change in the config in order prevent any surprise in the case of plugin upgrade
-        if (strpos($this->getApiUrl(), '/v2/sms/')) {
+        if (strpos($this->getApiUrl(), '/v2/sms/') !== false) {
             $url = substr($this->getApiUrl(), 0, strpos($this->getApiUrl(), '/v2/sms/'));
         } else {
             $url = $this->getApiUrl();
@@ -738,10 +738,10 @@ class Sms extends AbstractHelper
             CURLOPT_USERAGENT => $agent,
         ];
 
-        $this->logger->addInfo(sprintf("Request URL: %s, %s", $method, $url));
+        $this->logger->info(sprintf("Request URL: %s, %s", $method, $url));
 
         if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
-            $this->logger->addInfo(sprintf("Request payload: %s", json_encode($data)));
+            $this->logger->info(sprintf("Request payload: %s", json_encode($data)));
             $curlParams[CURLOPT_CUSTOMREQUEST] = $method;
             $curlParams[CURLOPT_POSTFIELDS] = json_encode($data);
         }
@@ -755,15 +755,15 @@ class Sms extends AbstractHelper
 
         curl_close($curl);
 
-        $this->logger->addInfo(sprintf("Response status code: %s", $statusCode));
+        $this->logger->info(sprintf("Response status code: %s", $statusCode));
 
         if ($err) {
-            $this->logger->addError('Error:' . $err);
+            $this->logger->error('Error:' . $err);
 
             throw new \Exception('Retry again.');
         }
 
-        $this->logger->addInfo("Response:", [$response]);
+        $this->logger->info("Response:", [$response]);
 
         return $response;
     }

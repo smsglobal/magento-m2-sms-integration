@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
 		<add id="Smsglobal::top_level" module="Smsglobal_Sms" resource="Magento_Backend::content" sortOrder="9999" title="Smsglobal"/>
-		<add action="smsglobal_sms/smslog/index" id="Smsglobal_Sms::smsglobal_sms_smslog" module="Smsglobal_Sms" parent="Smsglobal::top_level" resource="Magento_Backend::content" sortOrder="9999" title="SMS Log Hstory"/>
+		<add action="smsglobal_sms/smslog/index" id="Smsglobal_Sms::smsglobal_sms_smslog" module="Smsglobal_Sms" parent="Smsglobal::top_level" resource="Magento_Backend::content" sortOrder="9999" title="SMS Log History"/>
 		<add action="smsglobal_sms/smslog/new" id="Smsglobal_Sms::smsglobal_sms_new" module="Smsglobal_Sms" parent="Smsglobal::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Send SMS"/>
 	</menu>
 </config>
