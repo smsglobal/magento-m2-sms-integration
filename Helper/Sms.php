@@ -713,7 +713,7 @@ class Sms extends AbstractHelper
 
         // API url was supposed to be host only but it's referenced with send sms endpoint -> `https://api.smsglobal.com/v2/sms/`
         // Avoiding change in the config in order prevent any surprise in the case of plugin upgrade
-        if (strpos($this->getApiUrl(), '/v2/sms/')) {
+        if (strpos($this->getApiUrl(), '/v2/sms/') !== false) {
             $url = substr($this->getApiUrl(), 0, strpos($this->getApiUrl(), '/v2/sms/'));
         } else {
             $url = $this->getApiUrl();
